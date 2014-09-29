@@ -47,7 +47,7 @@ public class PrintBoard
 				}
 				else
 				{
-					System.out.print(" ● ");
+					System.out.print("   ");
 				}
 			}
 			System.out.println("¦");

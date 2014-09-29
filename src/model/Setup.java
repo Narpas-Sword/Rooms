@@ -24,19 +24,19 @@ public class Setup
 	/**
 	 * The Chance a room has to generate if it has 1 room adjacent to it.
 	 */
-	double RoomChance1 = .5;
+	double RoomChance1 = .0025;
 	/**
 	 * The Chance a room has to generate if it has 2 room adjacent to it.
 	 */
-	double RoomChance2 = .0025;
+	double RoomChance2 = .000005;
 	/**
 	 * The Chance a room has to generate if it has 3 room adjacent to it.
 	 */
-	double RoomChance3 = .00025;
+	double RoomChance3 = 0;
 	/**
 	 * The Chance a room has to generate if it has 4 room adjacent to it.
 	 */
-	double RoomChance4 = .000025;
+	double RoomChance4 = 0;
 	/**
 	 * The most rooms allowed to generate.
 	 */
