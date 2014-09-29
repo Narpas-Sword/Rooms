@@ -34,7 +34,7 @@ public class PrintBoard
 			System.out.print("¦");
 			for (int index1 = currentSetup.getGenMin(); index1 < currentSetup.getGenMax(); index1++)
 			{
-				if (currentSetup.getSetup()[index][index1])
+				if (currentSetup.get()[index][index1])
 				{
 					if (index == currentSetup.getGenCent() && index1 == currentSetup.getGenCent())
 					{
