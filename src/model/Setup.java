@@ -16,84 +16,109 @@ public class Setup
 	 * The highest value a room is allowed to generate at. Must be greater than
 	 * GenMin.
 	 */
-	private int GenMax = 15;
+	private int GenMax = 25;
 	/**
 	 * The X and Y coordinates of the start room.
 	 */
-	private int GenCent = 7;
+	private int GenCent = 12;
 	/**
 	 * The Chance a room has to generate if it has 1 room adjacent to it.
 	 */
-	double RoomChance1 = .50;
+	double RoomChance1 = .5;
 	/**
 	 * The Chance a room has to generate if it has 2 room adjacent to it.
 	 */
-	double RoomChance2 = .25;
+	double RoomChance2 = .0025;
+	/**
+	 * The Chance a room has to generate if it has 3 room adjacent to it.
+	 */
+	double RoomChance3 = .00025;
+	/**
+	 * The Chance a room has to generate if it has 4 room adjacent to it.
+	 */
+	double RoomChance4 = .000025;
 	/**
 	 * The most rooms allowed to generate.
 	 */
-	int MaxRooms = (int) Math.round(Math.pow(GenMax - GenMin, 2) * .35);
+	int MaxRooms = (int) Math.round(Math.pow(GenMax - GenMin, 2) * 1);
 	/**
 	 * The least rooms allowed to generate.
 	 */
-	int MinRooms = (int) Math.round(Math.pow(GenMax - GenMin, 2) * .25);
+	int MinRooms = (int) Math.round(Math.pow(GenMax - GenMin, 2) * .50);
 	/**
 	 * Where rooms are and aren't.
 	 */
 	boolean[][] Setup = new boolean[GenMax][GenMax];
+	/**
+	 * A dummy of Setup
+	 * @see Setup
+	 */
+	boolean[][] Dummy = new boolean[GenMax][GenMax];
 
 	/**
 	 * Generates a new setup of rooms.
 	 */
 	public Setup()
 	{
+		for (int index = GenMin; index < GenMax; index++)
+		{
+			for (int index1 = GenMin; index1 < GenMax; index1++)
+			{
+				Setup[index][index1] = false;
+				Dummy[index][index1] = false;
+			}
+		}
+
+		Setup[GenCent][GenCent] = true;
+		Dummy[GenCent][GenCent] = true;
+
 		while (RoomCount() < MinRooms || RoomCount() > MaxRooms)
 		{
-			for (int index = GenMin; index < GenMax; index++)
+			//for (int i = 0; i < 1; i++)
+			while (RoomCount() < MinRooms)
 			{
-				for (int index1 = GenMin; index1 < GenMax; index1++)
+				for (int index = GenMin; index < GenMax; index++)
 				{
-					Setup[index][index1] = false;
-				}
-			}
-			Setup[GenCent][GenCent] = true;
-			for (int index = GenCent; index < GenMax; index++)
-			{
-				for (int index1 = GenCent; index1 < GenMax; index1++)
-				{
-					if (!(index == GenCent && index1 == GenCent))
+
+					for (int index1 = GenMin; index1 < GenMax; index1++)
 					{
-						Setup[index][index1] = getSurrounding(index, index1);
+
+						if (!(Setup[index][index1]))
+						{
+							if (getSurroundingNum(index, index1) > 0)
+							{
+								Dummy[index][index1] = getSurroundingBool(index, index1);
+							}
+						}
+						else
+						{
+							//System.out.println(index + ", " + index1 + " = true");
+						}
+					}
+				}
+				for (int index = GenMin; index < GenMax; index++)
+				{
+					for (int index1 = GenMin; index1 < GenMax; index1++)
+					{
+						Setup[index][index1] = Dummy[index][index1];
 					}
 				}
 			}
-			for (int index = GenCent; index >= GenMin; index--)
+			while (RoomCount() > MaxRooms)
 			{
-				for (int index1 = GenCent; index1 >= GenMin; index1--)
+				for (int index = GenMin; index < GenMax; index++)
 				{
-					if (!(index == GenCent && index1 == GenCent))
+
+					for (int index1 = GenMin; index1 < GenMax; index1++)
 					{
-						Setup[index][index1] = getSurrounding(index, index1);
-					}
-				}
-			}
-			for (int index = GenCent - 1; index >= GenMin; index--)
-			{
-				for (int index1 = GenCent + 1; index1 < GenMax; index1++)
-				{
-					if (!(index == GenCent && index1 == GenCent))
-					{
-						Setup[index][index1] = getSurrounding(index, index1);
-					}
-				}
-			}
-			for (int index = GenCent + 1; index < GenMax; index++)
-			{
-				for (int index1 = GenCent - 1; index1 >= GenMin; index1--)
-				{
-					if (!(index == GenCent && index1 == GenCent))
-					{
-						Setup[index][index1] = getSurrounding(index, index1);
+
+						if (getSurroundingNum(index, index1) == 1)
+						{
+							if (Math.random() < .50)
+							{
+								Setup[index][index1] = false;
+							}
+						}
 					}
 				}
 			}
@@ -131,32 +156,32 @@ public class Setup
 	 *            the second part of the room's coordinates.
 	 * @return a boolean based on the adjacent rooms.
 	 */
-	private boolean getSurrounding(int index, int index1)
+	private boolean getSurroundingBool(int index, int index1)
 	{
 		int roomCount = 0;
 		double percent = 0;
-		if (index != GenMax - 1)
+		if (index < GenMax - 1)
 		{
 			if (Setup[index + 1][index1])
 			{
 				roomCount = roomCount + 1;
 			}
-		}
-		if (index != GenMin)
+		}	
+		if (index > GenMin)
 		{
 			if (Setup[index - 1][index1])
 			{
 				roomCount = roomCount + 1;
 			}
 		}
-		if (index1 != GenMax - 1)
+		if (index1 < GenMax - 1)
 		{
 			if (Setup[index][index1 + 1])
 			{
 				roomCount = roomCount + 1;
 			}
 		}
-		if (index1 != GenMin)
+		if (index1 > GenMin)
 		{
 			if (Setup[index][index1 - 1])
 			{
@@ -166,12 +191,64 @@ public class Setup
 		if (roomCount == 1)
 		{
 			percent = RoomChance1;
-		}
-		else if (roomCount == 2)
+		} else if (roomCount == 2)
 		{
 			percent = RoomChance2;
 		}
+		else if (roomCount == 3)
+		{
+			percent = RoomChance3;
+		} else if (roomCount == 4)
+		{
+			percent = RoomChance4;
+		}
+		else
+		{
+			percent = 0;
+		}
 		return Math.random() < percent;
+	}
+	/**
+	 * Returns the number of rooms surrounding the given room
+	 * 
+	 *@param index
+	 *            the first part of the room's coordinates.
+	 * @param index1
+	 *            the second part of the room's coordinates.
+	 * @return Number of surrounding rooms
+	 */
+	private int getSurroundingNum(int index, int index1)
+	{
+		int roomCount = 0;
+		if (index < GenMax - 1)
+		{
+			if (Setup[index + 1][index1])
+			{
+				roomCount = roomCount + 1;
+			}
+		}	
+		if (index > GenMin)
+		{
+			if (Setup[index - 1][index1])
+			{
+				roomCount = roomCount + 1;
+			}
+		}
+		if (index1 < GenMax - 1)
+		{
+			if (Setup[index][index1 + 1])
+			{
+				roomCount = roomCount + 1;
+			}
+		}
+		if (index1 > GenMin)
+		{
+			if (Setup[index][index1 - 1])
+			{
+				roomCount = roomCount + 1;
+			}
+		}
+		return roomCount;
 	}
 
 	/**
@@ -256,4 +333,5 @@ public class Setup
 	public void setGenCent(int genCent)
 	{
 		GenCent = genCent;
-	}}
+	}
+}
