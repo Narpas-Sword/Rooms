@@ -24,9 +24,9 @@ public class Board
 				Path[index][index1] = false;
 			}
 		}
-		Path = Pathfinder(setup.getGenCent(), setup.getGenCent(), setup, Path);
 		Path[setup.getGenCent()][setup.getGenCent()] = true;
-		//if (Path == setup.get())
+		Path = Pathfinder(setup.getGenCent(), setup.getGenCent(), setup, Path);
+		// if (Path == setup.get())
 		if (true)
 		{
 			System.out.print("Setup: ");
@@ -46,15 +46,19 @@ public class Board
 					System.out.print(Path[index][index1] + " ");
 				}
 			}
+			System.out.println("");
+			System.out.println(Path == setup.get());
 		}
-		while (!isEdge)
-		{
-			index = RanInt(setup);
-			index1 = RanInt(setup);
-			EdgeTest(setup);
-			System.out.println(index + " " + index1);
-			System.out.println(isEdge);
-		}
+		/*
+		 * while (!isEdge)
+		 *	{
+		 *		index = RanInt(setup);
+		 *		index1 = RanInt(setup);
+		 *		EdgeTest(setup);
+		 *		System.out.println(index + " " + index1);
+		 *		System.out.println(isEdge);
+		 *	}
+		 */
 	}
 
 	private int RanInt(Setup setup)
@@ -62,108 +66,54 @@ public class Board
 		return rand.nextInt((setup.getGenMax() - setup.getGenMin())) + setup.getGenMin();
 	}
 
-	private boolean EdgeTest(Setup setup)
-	{
-		if (setup.get()[index][index1])
-		{
-			if (index != setup.getGenMin() && index1 != setup.getGenMin()
-					&& (index == setup.getGenMax() - 1 || !setup.get()[index + 1][index1])
-					&& (index1 == setup.getGenMax() - 1 || !setup.get()[index][index1 + 1])
-					&& setup.get()[index - 1][index1 - 1] && setup.get()[index - 1][index1] && setup.get()[index][index1 - 1])
-			{
-				isEdge = true;
-			}
-			else if (index != setup.getGenMin() && index1 != setup.getGenMax() - 1
-					&& (index == setup.getGenMax() - 1 || !setup.get()[index + 1][index1])
-					&& (index1 == setup.getGenMin() || !setup.get()[index][index1 - 1])
-					&& setup.get()[index - 1][index1 + 1] && setup.get()[index - 1][index1] && setup.get()[index][index1 + 1])
-			{
-				isEdge = true;
-			}
-			else if (index != setup.getGenMax() - 1 && index1 != setup.getGenMin()
-					&& (index == setup.getGenMin() || !setup.get()[index - 1][index1])
-					&& (index1 == setup.getGenMax() - 1 || !setup.get()[index][index1 + 1])
-					&& setup.get()[index + 1][index1 - 1] && setup.get()[index + 1][index1] && setup.get()[index][index1 - 1])
-			{
-				isEdge = true;
-			}
-			else if (index != setup.getGenMax() - 1 && index1 != setup.getGenMax() - 1
-					&& (index == setup.getGenMin() || !setup.get()[index - 1][index1])
-					&& (index1 == setup.getGenMin() || !setup.get()[index][index1 - 1])
-					&& setup.get()[index + 1][index1 + 1] && setup.get()[index + 1][index1] && setup.get()[index][index1 + 1])
-			{
-				isEdge = true;
-			}
-			else if ((index != setup.getGenMax() - 1 && setup.get()[index + 1][index1])
-					&& (index == setup.getGenMin() || !setup.get()[index - 1][index1])
-					&& (index1 == setup.getGenMax() - 1 || !setup.get()[index][index1 + 1])
-					&& (index1 == setup.getGenMin() || !setup.get()[index][index1 - 1]))
-			{
-				isEdge = true;
-			}
-			else if ((index == setup.getGenMax() - 1 || !setup.get()[index + 1][index1])
-					&& (index != setup.getGenMin() && setup.get()[index - 1][index1])
-					&& (index1 == setup.getGenMax() - 1 || !setup.get()[index][index1 + 1])
-					&& (index1 == setup.getGenMin() || !setup.get()[index][index1 - 1]))
-			{
-				isEdge = true;
-			}
-			else if ((index == setup.getGenMax() - 1 || !setup.get()[index + 1][index1])
-					&& (index == setup.getGenMin() || !setup.get()[index - 1][index1])
-					&& (index1 != setup.getGenMax() - 1 && setup.get()[index][index1 + 1])
-					&& (index1 == setup.getGenMin() || !setup.get()[index][index1 - 1]))
-			{
-				isEdge = true;
-			}
-			else if ((index == setup.getGenMax() - 1 || !setup.get()[index + 1][index1])
-					&& (index == setup.getGenMin() || !setup.get()[index - 1][index1])
-					&& (index1 == setup.getGenMax() - 1 || !setup.get()[index][index1 + 1])
-					&& (index1 != setup.getGenMin() && setup.get()[index][index1 - 1]))
-			{
-				isEdge = true;
-			}
-		}
-		return isEdge;
-	}
 	private boolean[][] Pathfinder(int index, int index1, Setup setup, boolean[][] path)
 	{
 		if (index + 1 < setup.getGenMax())
 		{
-
 			if (setup.get()[index + 1][index])
 			{
-				path[index + 1][index1] = true;
-				path = Pathfinder(index + 1, index1, setup, path);
-			}	
+				if (!path[index + 1][index])
+				{
+					path[index + 1][index1] = true;
+					path = Pathfinder(index + 1, index1, setup, path);
+				}
+			}
 		}
 		if (index - 1 > setup.getGenMin())
 		{
-
 			if (setup.get()[index - 1][index])
 			{
-				path[index - 1][index1] = true;
-				path = Pathfinder(index - 1, index1, setup, path);
+				if (!path[index - 1][index1])
+				{
+					path[index - 1][index1] = true;
+					path = Pathfinder(index - 1, index1, setup, path);
+				}
 			}
 		}
-		if (index + 1 < setup.getGenMax())
+		if (index1 + 1 < setup.getGenMax())
 		{
-
 			if (setup.get()[index][index + 1])
 			{
-				path[index][index1 + 1] = true;
-				path = Pathfinder(index, index1 + 1, setup, path);
+				if (!path[index][index1 + 1])
+				{
+					path[index][index1 + 1] = true;
+					path = Pathfinder(index, index1 + 1, setup, path);
+				}
 			}
 		}
-		if (index - 1 > setup.getGenMin())
+		if (index1 - 1 > setup.getGenMin())
 		{
 
 			if (setup.get()[index][index - 1])
 			{
-				path[index][index1 - 1] = true;
-				path = Pathfinder(index, index1 - 1, setup, path);
+				if (!path[index][index1 - 1])
+				{
+					path[index][index1 - 1] = true;
+					path = Pathfinder(index, index1 - 1, setup, path);
+				}
 			}
 		}
-		
+
 		return path;
 	}
 }
