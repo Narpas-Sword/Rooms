@@ -9,9 +9,55 @@ public class Board
 	int index1;
 	boolean isEdge = false;
 
+	/**
+	 * 
+	 * @param setup
+	 */
 	public Board(Setup setup)
 	{
 		int[][] Board = new int[setup.getGenMax()][setup.getGenMax()];
+		int[][] Path = new int[setup.getGenMax()][setup.getGenMax()];
+		boolean[][] PathBool = new boolean[setup.getGenMax()][setup.getGenMax()];
+		for (index = 0; index < setup.getGenMax(); index++)
+		{
+			for (index1 = 0; index1 < setup.getGenMax(); index1++)
+			{
+				Path[index][index1] = 0;
+				PathBool[index][index1] = false;
+			}
+		}
+		Path = Pathfinder(setup.getGenCent(), setup.getGenCent(), setup, Path);
+		for (index = 0; index < setup.getGenMax() - 1; index++)
+		{
+			for (index1 = 0; index1 < setup.getGenMax() - 1; index1++)
+			{
+				if (Path[index][index1] == 1)
+				{
+					PathBool[index][index1] = true;
+				}
+			}
+		}
+		//if (PathBool == setup.get())
+		if (true)
+		{
+			System.out.print("Setup: ");
+			for (index = 0; index < setup.getGenMax() - 1; index++)
+			{
+				for (index1 = 0; index1 < setup.getGenMax() - 1; index1++)
+				{
+					System.out.print(setup.get()[index][index1] + " ");
+				}
+			}
+			System.out.println("");
+			System.out.print("Path:  ");
+			for (index = 0; index < setup.getGenMax() - 1; index++)
+			{
+				for (index1 = 0; index1 < setup.getGenMax() - 1; index1++)
+				{
+					System.out.print(PathBool[index][index1] + " ");
+				}
+			}
+		}
 		while (!isEdge)
 		{
 			index = RanInt(setup);
@@ -89,5 +135,14 @@ public class Board
 			}
 		}
 		return isEdge;
+	}
+	private int[][] Pathfinder(int index, int index1, Setup setup, int[][] path)
+	{
+		if (setup.get()[index + 1][index])
+		{
+			path[index + 1][index1] = 1;
+			path = Pathfinder(index + 1, index1, setup, path);
+		}
+		return path;
 	}
 }

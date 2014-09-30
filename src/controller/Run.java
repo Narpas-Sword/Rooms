@@ -20,6 +20,8 @@ public class Run
 	{
 		Setup currentSetup = new Setup();
 		PrintBoard print = new PrintBoard();
+		Board currentBoard = new Board(currentSetup);
 		print.PrintSetup(currentSetup);
+		
 	}
 }
