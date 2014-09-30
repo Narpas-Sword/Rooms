@@ -16,28 +16,17 @@ public class Board
 	public Board(Setup setup)
 	{
 		int[][] Board = new int[setup.getGenMax()][setup.getGenMax()];
-		int[][] Path = new int[setup.getGenMax()][setup.getGenMax()];
-		boolean[][] PathBool = new boolean[setup.getGenMax()][setup.getGenMax()];
+		boolean[][] Path = new boolean[setup.getGenMax()][setup.getGenMax()];
 		for (index = 0; index < setup.getGenMax(); index++)
 		{
 			for (index1 = 0; index1 < setup.getGenMax(); index1++)
 			{
-				Path[index][index1] = 0;
-				PathBool[index][index1] = false;
+				Path[index][index1] = false;
 			}
 		}
 		Path = Pathfinder(setup.getGenCent(), setup.getGenCent(), setup, Path);
-		for (index = 0; index < setup.getGenMax() - 1; index++)
-		{
-			for (index1 = 0; index1 < setup.getGenMax() - 1; index1++)
-			{
-				if (Path[index][index1] == 1)
-				{
-					PathBool[index][index1] = true;
-				}
-			}
-		}
-		//if (PathBool == setup.get())
+		Path[setup.getGenCent()][setup.getGenCent()] = true;
+		//if (Path == setup.get())
 		if (true)
 		{
 			System.out.print("Setup: ");
@@ -54,7 +43,7 @@ public class Board
 			{
 				for (index1 = 0; index1 < setup.getGenMax() - 1; index1++)
 				{
-					System.out.print(PathBool[index][index1] + " ");
+					System.out.print(Path[index][index1] + " ");
 				}
 			}
 		}
@@ -136,13 +125,45 @@ public class Board
 		}
 		return isEdge;
 	}
-	private int[][] Pathfinder(int index, int index1, Setup setup, int[][] path)
+	private boolean[][] Pathfinder(int index, int index1, Setup setup, boolean[][] path)
 	{
-		if (setup.get()[index + 1][index])
+		if (index + 1 < setup.getGenMax())
 		{
-			path[index + 1][index1] = 1;
-			path = Pathfinder(index + 1, index1, setup, path);
+
+			if (setup.get()[index + 1][index])
+			{
+				path[index + 1][index1] = true;
+				path = Pathfinder(index + 1, index1, setup, path);
+			}	
 		}
+		if (index - 1 > setup.getGenMin())
+		{
+
+			if (setup.get()[index - 1][index])
+			{
+				path[index - 1][index1] = true;
+				path = Pathfinder(index - 1, index1, setup, path);
+			}
+		}
+		if (index + 1 < setup.getGenMax())
+		{
+
+			if (setup.get()[index][index + 1])
+			{
+				path[index][index1 + 1] = true;
+				path = Pathfinder(index, index1 + 1, setup, path);
+			}
+		}
+		if (index - 1 > setup.getGenMin())
+		{
+
+			if (setup.get()[index][index - 1])
+			{
+				path[index][index1 - 1] = true;
+				path = Pathfinder(index, index1 - 1, setup, path);
+			}
+		}
+		
 		return path;
 	}
 }
