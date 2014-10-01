@@ -66,38 +66,6 @@ public class Board
 			{
 				System.out.print(" ");
 			}
-			for (int i = setup.getGenMin(); i <= (setup.getGenMax() * 3) + 1; i++)
-			{
-				System.out.print("■");
-			}
-			System.out.println();
-			for (int index = setup.getGenMin(); index < setup.getGenMax(); index++)
-			{
-				System.out.print("¦");
-				for (int index1 = setup.getGenMin(); index1 < setup.getGenMax(); index1++)
-				{
-					if (Path[index][index1])
-					{
-						if (index == setup.getGenCent() && index1 == setup.getGenCent())
-						{
-							System.out.print("[O]");
-						}
-						else
-						{
-							System.out.print("[■]");
-						}
-					}
-					else
-					{
-						System.out.print("   ");
-					}
-				}
-				System.out.println("¦");
-			}
-			for (int i = setup.getGenMin(); i <= (setup.getGenMax() * 3) + 1; i++)
-			{
-				System.out.print("■");
-			}
 		}
 		/*
 		 * while (!isEdge)
@@ -121,9 +89,9 @@ public class Board
 		
 		if (index + 1 < setup.getGenMax())
 		{
-			if (setup.get()[index + 1][index])
+			if (setup.get()[index + 1][index1])
 			{
-				if (!path[index + 1][index])
+				if (!path[index + 1][index1])
 				{
 					path[index + 1][index1] = true;
 					path = Pathfinder(index + 1, index1, setup, path);
@@ -133,7 +101,7 @@ public class Board
 		
 		if (index > setup.getGenMin())
 		{
-			if (setup.get()[index - 1][index])
+			if (setup.get()[index - 1][index1])
 			{
 				if (!path[index - 1][index1])
 				{
@@ -154,7 +122,7 @@ public class Board
 				}
 			}
 		}
-		/*
+		
 		if (index1 > setup.getGenMin())
 		{
 
@@ -167,7 +135,7 @@ public class Board
 				}
 			}
 		}
-		*/
+		
 		return path;
 	}
 }
