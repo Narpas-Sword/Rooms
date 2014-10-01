@@ -24,15 +24,15 @@ public class Setup
 	/**
 	 * The Chance a room has to generate if it has 1 room adjacent to it.
 	 */
-	double RoomChance1 = .25;
+	double RoomChance1 = 1; //0.25
 	/**
 	 * The Chance a room has to generate if it has 2 room adjacent to it.
 	 */
-	double RoomChance2 = .025;
+	double RoomChance2 = 0; //0.025
 	/**
 	 * The Chance a room has to generate if it has 3 room adjacent to it.
 	 */
-	double RoomChance3 = .0125;
+	double RoomChance3 = 0; //0.0125
 	/**
 	 * The Chance a room has to generate if it has 4 room adjacent to it.
 	 */
@@ -40,11 +40,11 @@ public class Setup
 	/**
 	 * The most rooms allowed to generate.
 	 */
-	int MaxRooms = (int) Math.round(Math.pow(GenMax - GenMin, 2) * 1);
+	int MaxRooms = 5; //(int) Math.round(Math.pow(GenMax - GenMin, 2) * 1);
 	/**
 	 * The least rooms allowed to generate.
 	 */
-	int MinRooms = (int) Math.round(Math.pow(GenMax - GenMin, 2) * .50);
+	int MinRooms = 5; //(int) Math.round(Math.pow(GenMax - GenMin, 2) * .50);
 	/**
 	 * Where rooms are and aren't.
 	 */
