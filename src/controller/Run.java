@@ -1,25 +1,15 @@
 package controller;
 
-import model.Board;
-import model.Setup;
-import view.PrintBoard;
-
 /**
  * Starts up the program Rooms.
  * 
- * @author GhostGlitch
+ * @author GhostGlitch and Narpas-Sword
+ * @version 0.9.4 11/4/14 Clean
  */
 public class Run
 {
-	/**
-	 * Starts up the program Rooms.
-	 * 
-	 * @param args Java requirement.
-	 */
 	public static void main(String[] args)
 	{
-		Setup currentSetup = new Setup();
-		PrintBoard print = new PrintBoard();
-		print.PrintSetup(currentSetup);
+		new Controller();
 	}
 }
